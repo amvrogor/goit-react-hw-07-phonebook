@@ -1,7 +1,8 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact, changeContact } from 'redux/contactsSlice';
+import { useDispatch } from 'react-redux';
+import { deleteContact, changeContact } from 'redux/operations';
+import { toast } from 'react-hot-toast';
 import { setIsChanged } from 'redux/isChangedSlice';
-import { getContacts, getIsChanged } from 'redux/selectors';
+import { useContacts, useIsChanged } from 'hooks';
 import { Formik, Field } from 'formik';
 import { validateSchema } from 'components/validateSchema';
 import {
@@ -18,8 +19,8 @@ import {
 
 export const Contact = ({ contact: { name, number, id } }) => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  const isChanged = useSelector(getIsChanged);
+  const contacts = useContacts();
+  const isChanged = useIsChanged();
   const handleDelete = () => dispatch(deleteContact(id));
   const handleIsChanged = () => {
     dispatch(setIsChanged(id, true));
@@ -52,7 +53,7 @@ export const Contact = ({ contact: { name, number, id } }) => {
                     contact.name.toLowerCase() === values.name.toLowerCase()
                 )
             )
-              alert(`${values.name} is already in contacts`);
+              toast.error(`${values.name} is already in contacts`);
             else {
               dispatch(changeContact(values));
               dispatch(setIsChanged(id, false));

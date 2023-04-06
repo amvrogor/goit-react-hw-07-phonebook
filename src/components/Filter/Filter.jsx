@@ -1,11 +1,11 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setFilter } from '../../redux/filterSlice';
 import { FilterField } from './Filter.styled';
-import { getFilter } from 'redux/selectors';
+import { useFilter } from 'hooks';
 
 export const Filter = () => {
   const dispatch = useDispatch();
-  const filterValue = useSelector(getFilter);
+  const filter = useFilter();
   const changeFilter = e => {
     dispatch(setFilter(e.currentTarget.value));
   };
@@ -13,7 +13,7 @@ export const Filter = () => {
   return (
     <FilterField>
       Find contacts by name
-      <input type="text" value={filterValue} onChange={changeFilter} />
+      <input type="text" value={filter} onChange={changeFilter} />
     </FilterField>
   );
 };

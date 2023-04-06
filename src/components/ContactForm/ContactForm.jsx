@@ -1,8 +1,10 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-hot-toast';
 import { Formik, Field } from 'formik';
 import { validateSchema } from 'components/validateSchema';
-import { addContact } from 'redux/contactsSlice';
-import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
+import { useContacts } from 'hooks';
+
 import {
   Form,
   FormField,
@@ -12,7 +14,7 @@ import {
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useContacts();
   return (
     <Formik
       initialValues={{
@@ -24,7 +26,7 @@ export const ContactForm = () => {
         contacts.find(
           contact => contact.name.toLowerCase() === values.name.toLowerCase()
         )
-          ? alert(`${values.name} is already in contacts`)
+          ? toast.error(`${values.name} is already in contacts`)
           : dispatch(addContact(values));
         actions.resetForm();
       }}
