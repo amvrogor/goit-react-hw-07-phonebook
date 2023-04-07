@@ -1,6 +1,8 @@
 import { useDispatch } from 'react-redux';
-import { deleteContact, changeContact } from 'redux/operations';
 import { toast } from 'react-hot-toast';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { deleteContact, changeContact } from 'redux/operations';
 import { setIsChanged } from 'redux/isChangedSlice';
 import { useContacts, useIsChanged } from 'hooks';
 import { Formik, Field } from 'formik';
@@ -21,7 +23,23 @@ export const Contact = ({ contact: { name, number, id } }) => {
   const dispatch = useDispatch();
   const contacts = useContacts();
   const isChanged = useIsChanged();
-  const handleDelete = () => dispatch(deleteContact(id));
+  const handleDelete = () => {
+    confirmAlert({
+      title: '',
+      message: 'Are you sure?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => dispatch(deleteContact(id)),
+        },
+        {
+          label: 'No',
+          onClick: () => {},
+        },
+      ],
+    });
+  };
+
   const handleIsChanged = () => {
     dispatch(setIsChanged(id, true));
   };
