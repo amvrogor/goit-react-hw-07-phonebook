@@ -30,7 +30,9 @@ export const Contact = ({ contact: { name, number, id } }) => {
       buttons: [
         {
           label: 'Yes',
-          onClick: () => dispatch(deleteContact(id)),
+          onClick: () => {
+            dispatch(deleteContact(id));
+          },
         },
         {
           label: 'No',
